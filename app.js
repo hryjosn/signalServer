@@ -42,34 +42,35 @@ function listenCallback() {
 
 function ioCallback(socket) {
   console.log(`Socket id: ${socket.id}`);
-  
+
   socket.on('join', (roomID, callback) => {
     console.log('join', roomID);
-    
+
     let socketIds = socketIdsInRoom(roomID);
     console.log(socketIds);
-    
+
     callback(socketIds);
     socket.join(roomID);
     socket.room = roomID;
   });
-  
+  socket.on('call', data => {console.log(data)})
+
   socket.on('exchange', data => {
     console.log('exchange', data.to);
-    
+
     data.from = socket.id;
     let to = io.sockets.connected[data.to];
     to.emit('exchange', data);
   });
-  
+
   socket.on('disconnect', () => {
     console.log('disconnect');
-    
+
     if (socket.room) {
       let room = socket.room;
       io.to(room).emit('leave', socket.id);
       socket.leave(room);
-      
+
       console.log('leave');
     }
   });
