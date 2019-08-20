@@ -62,7 +62,6 @@ function ioCallback(socket) {
     to.emit('exchange', data);
   });
   socket.on('leaveRoom', () => {
-    console.log('leaveRoom');
     if (socket.room) {
       let room = socket.room;
       io.to(room).emit('leave');
