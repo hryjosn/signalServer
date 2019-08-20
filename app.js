@@ -61,21 +61,23 @@ function ioCallback(socket) {
     let to = io.sockets.connected[data.to];
     to.emit('exchange', data);
   });
-  socket.on('leaveRoom', socketId => {
-    console.log('manualLeaveRoom');
+  socket.on('leaveRoom', () => {
+    console.log('leaveRoom');
     if (socket.room) {
       let room = socket.room;
-      io.to(room).emit('leave', socketId);
+      io.to(room).emit('leave');
       socket.leave(room);
 
       console.log('leaveRoom');
     }
   });
 
-  socket.on('disconnect', socket=> {
+  socket.on('disconnect', () => {
+    console.log('disconnect');
+
     if (socket.room) {
       let room = socket.room;
-      io.to(room).emit('leave');
+      io.to(room).emit('leave', socket.id);
       socket.leave(room);
 
       console.log('leave');
