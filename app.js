@@ -72,8 +72,8 @@ function ioCallback(socket) {
     }
   });
 
-  socket.on('disconnect', () => {
-    console.log('disconnect');
+  socket.on('disconnect', disconnectData=> {
+    console.log('disconnect',disconnectData);
 
     if (socket.room) {
       let room = socket.room;
