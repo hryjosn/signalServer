@@ -60,9 +60,9 @@ function ioCallback(socket) {
     to.emit('exchange', data);
   });
   socket.on('declineCalling', roomID => {
-    socketIdsInRoom(roomID).forEach(socket => {
-      socket.disconnect(true)
-      console.log(socket, 'disconnect')
+    socketIdsInRoom(roomID).forEach(socketId => {
+      io.sockets.connected[socketId].disconnect(true);
+      console.log(socketId, 'disconnect')
     })
   });
   socket.on('leaveRoom', () => {
