@@ -61,7 +61,8 @@ function ioCallback(socket) {
   });
   socket.on('declineCalling', roomID => {
     socketIdsInRoom(roomID).forEach(socketId => {
-      io.sockets.connected[socketId].disconnect(true);
+      io.sockets.connected[socketId].disconnect();
+      console.log('socket 被切斷',io.sockets.connected[socketId])
       console.log(socketId, 'disconnect')
     })
   });
@@ -76,12 +77,11 @@ function ioCallback(socket) {
 
   socket.on('disconnect', () => {
     console.log('disconnect');
-
+    console.log(socket.room)
     if (socket.room) {
       let room = socket.room;
       io.to(room).emit('leave', socket.id);
       socket.leave(room);
-
       console.log('leave');
     }
   });
