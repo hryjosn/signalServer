@@ -67,7 +67,7 @@ function ioCallback(socket) {
       io.to(room).emit('leave');
       socket.leave(room);
 
-      console.log('leaveRoom');
+      console.log('leaveRoom', room);
     }
   });
 
@@ -89,13 +89,6 @@ function ioCallback(socket) {
  ================================ */
 function socketIdsInRoom(roomID) {
   let socketIds = io.nsps['/'].adapter.rooms[roomID];
-  if (socketIds) {
-    let collection = [];
-    for (let key in socketIds) {
-      collection.push(key);
-    }
-    return collection;
-  } else {
-    return [];
-  }
+  socketIds ? Object.keys(socketIds).map(key => key) : []
+
 }
