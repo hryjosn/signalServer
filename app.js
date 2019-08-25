@@ -89,6 +89,13 @@ function ioCallback(socket) {
  ================================ */
 function socketIdsInRoom(roomID) {
   let socketIds = io.nsps['/'].adapter.rooms[roomID];
-  socketIds ? Object.keys(socketIds).map(key => key) : []
-
+  if (socketIds) {
+    let collection = [];
+    for (let key in socketIds) {
+      collection.push(key);
+    }
+    return collection;
+  } else {
+    return [];
+  }
 }
