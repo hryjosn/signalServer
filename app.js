@@ -60,7 +60,10 @@ function ioCallback(socket) {
     to.emit('exchange', data);
   });
   socket.on('declineCalling', roomID => {
-    console.log('[declineCalling] roomID>>>', socketIdsInRoom(roomID));
+    socketIdsInRoom(roomID).forEach(socket => {
+      socket.disconnect(true)
+      console.log(socket, 'disconnect')
+    })
   });
   socket.on('leaveRoom', () => {
     if (socket.room) {
