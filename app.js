@@ -61,9 +61,8 @@ function ioCallback(socket) {
   });
   socket.on('declineCalling', roomID => {
     socketIdsInRoom(roomID).forEach(socketId => {
-      io.sockets.connected[socketId].disconnect();
-      console.log('socket 被切斷',io.sockets.connected[socketId])
-      console.log(socketId, 'disconnect')
+      // io.sockets.connected[socketId].disconnect();
+      io.to(roomID).emit('leave');
     })
   });
   socket.on('leaveRoom', () => {
@@ -92,6 +91,7 @@ function ioCallback(socket) {
  ================================ */
 function socketIdsInRoom(roomID) {
   let socketIds = io.nsps['/'].adapter.rooms[roomID];
+
   if (socketIds) {
     let collection = [];
     for (let key in socketIds) {
