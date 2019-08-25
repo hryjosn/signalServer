@@ -62,7 +62,8 @@ function ioCallback(socket) {
   socket.on('declineCalling', roomID => {
     socketIdsInRoom(roomID).forEach(socketId => {
       io.sockets.connected[socketId].disconnect();
-      io.to(socketId).emit('leave');
+      let socket = io.of("/").connected[socketId]
+      socket.emit('leave');
     })
   });
   socket.on('leaveRoom', () => {
