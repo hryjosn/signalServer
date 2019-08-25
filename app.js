@@ -61,9 +61,8 @@ function ioCallback(socket) {
   });
   socket.on('declineCalling', roomID => {
     socketIdsInRoom(roomID).forEach(socketId => {
-      io.sockets.connected[socketId].disconnect();
-      io.sockets.sockets[socketId].emit('leave');
-      // socket.emit('leave');
+      io.sockets.connected[socketId].emit('leave');
+      // io.sockets.connected[socketId].disconnect();
     })
   });
   socket.on('leaveRoom', () => {
