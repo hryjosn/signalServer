@@ -86,6 +86,7 @@ function callingCallback(socket) {
   });
 
   socket.on('hangOff', roomID => {
+    console.log('hangOff');
     socketIdsInRoom(roomID).forEach(socketId => {
       io.sockets.connected[socketId].emit('closeModal');
     })
