@@ -45,10 +45,8 @@ function ioCallback(socket) {
 
   socket.on('join', (roomID, callback) => {
     console.log('join', roomID);
-
     let socketIds = socketIdsInRoom(roomID);
     console.log(socketIds);
-
     callback(socketIds);
     socket.join(roomID);
     socket.room = roomID;
@@ -61,12 +59,14 @@ function ioCallback(socket) {
     let to = io.sockets.connected[data.to];
     to.emit('exchange', data);
   });
+  socket.on('declineCalling', roomID => {
+    console.log('[declineCalling] roomID>>>', socketIdsInRoom(roomID));
+  });
   socket.on('leaveRoom', () => {
     if (socket.room) {
       let room = socket.room;
       io.to(room).emit('leave');
       socket.leave(room);
-
       console.log('leaveRoom', room);
     }
   });
