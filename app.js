@@ -16,13 +16,14 @@ if (process.env.LOCAL) {
   server = http.createServer(app);
 }
 const io = require('socket.io')(server);
-
+const calling = io.of('/calling');
 /* ==============================
  Middleware
  ================================ */
 app.use(express.static(__dirname + '/public'));
 app.get('/', getCallback);
 io.on('connection', ioCallback);
+calling.on('connection', callingCallback);
 server.listen(serverPort, listenCallback);
 
 /* ==============================
@@ -62,18 +63,8 @@ function ioCallback(socket) {
   socket.on('declineCalling', roomID => {
     socketIdsInRoom(roomID).forEach(socketId => {
       io.sockets.connected[socketId].emit('leave');
-      // io.sockets.connected[socketId].disconnect();
     })
   });
-  socket.on('leaveRoom', () => {
-    if (socket.room) {
-      let room = socket.room;
-      io.to(room).emit('leave');
-      socket.leave(room);
-      console.log('leaveRoom', room);
-    }
-  });
-
   socket.on('disconnect', () => {
     console.log('disconnect');
     if (socket.room) {
@@ -82,6 +73,22 @@ function ioCallback(socket) {
       socket.leave(room);
       console.log('leave');
     }
+  });
+}
+function callingCallback(socket) {
+  console.log(`calling Socket id: ${socket.id}`);
+
+  socket.on('join', (roomID) => {
+    let socketIds = socketIdsInRoom(roomID);
+    console.log(socketIds);
+    socket.join(roomID);
+    socket.room = roomID;
+  });
+
+  socket.on('hangOff', roomID => {
+    socketIdsInRoom(roomID).forEach(socketId => {
+      io.sockets.connected[socketId].emit('closeModal');
+    })
   });
 }
 
