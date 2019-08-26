@@ -80,7 +80,7 @@ function callingCallback(socket) {
 
   socket.on('join', (roomID) => {
     let socketIds = socketIdsInRoom(roomID);
-    console.log(socketIds);
+    console.log('calling join',socketIds);
     socket.join(roomID);
     socket.room = roomID;
   });
