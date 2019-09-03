@@ -65,7 +65,7 @@ function ioCallback(socket) {
       let currentSocket = io.sockets.connected[socketId];
       if(currentSocket){
         currentSocket.conn.close();
-        currentSocket.conn.emit('leave');
+        currentSocket.emit('leave');
       }
 
     })
