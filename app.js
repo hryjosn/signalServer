@@ -75,7 +75,6 @@ function ioCallback(socket) {
       let room = socket.room;
       io.to(room).emit('leave', socket.id);
       socket.leave(room);
-      console.log('leave');
     }
   });
 }
