@@ -59,13 +59,13 @@ function ioCallback(socket) {
     to.emit('exchange', data);
   });
   socket.on('declineCalling', roomID => {
-    console.log('disconnect');
-    console.log('現在有這些Socket 在room裡',socketIdsInRoom(roomID))
+    console.log('declineCalling');
+    // console.log('現在有這些Socket 在room裡',socketIdsInRoom(roomID))
+    io.in(roomID).emit('leave');
     socketIdsInRoom(roomID).forEach(socketId => {
       // let currentSocket = io.sockets.connected[socketId];
       if(io.sockets.connected[socketId]){
         io.sockets.connected[socketId].conn.close();
-        io.sockets.connected[socketId].emit('leave');
       }
 
     })
