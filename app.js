@@ -16,14 +16,12 @@ if (process.env.LOCAL) {
   server = http.createServer(app);
 }
 const io = require('socket.io')(server);
-const calling = io.of('/calling');
 /* ==============================
  Middleware
  ================================ */
 app.use(express.static(__dirname + '/public'));
 app.get('/', getCallback);
 io.on('connection', ioCallback);
-calling.on('connection', callingCallback);
 server.listen(serverPort, listenCallback);
 
 /* ==============================
