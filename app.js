@@ -64,6 +64,7 @@ function ioCallback(socket) {
     console.log('disconnect');
 
     socketIdsInRoom(roomID).forEach(socketId => {
+      console.log('current socketId:',socketId);
       io.sockets.connected[socketId].close();
       io.sockets.connected[socketId].emit('leave');
     })
