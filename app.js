@@ -64,7 +64,7 @@ function ioCallback(socket) {
     socketIdsInRoom(roomID).forEach(socketId => {
       // let currentSocket = io.sockets.connected[socketId];
       if(io.sockets.connected[socketId]){
-        io.sockets.connected[socketId].close();
+        io.sockets.connected[socketId].conn.close();
         io.sockets.connected[socketId].emit('leave');
       }
 
