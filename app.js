@@ -62,7 +62,7 @@ function ioCallback(socket) {
   });
   socket.on('declineCalling', roomID => {
     console.log('disconnect');
-
+    console.log('現在有這些Socket 在room裡',socketIdsInRoom(roomID))
     socketIdsInRoom(roomID).forEach(socketId => {
       let currentSocket = io.sockets.connected[socketId];
       if(currentSocket){
@@ -80,23 +80,6 @@ function ioCallback(socket) {
       io.to(room).emit('leave', socket.id);
       socket.leave(room);
     }
-  });
-}
-function callingCallback(socket) {
-  console.log(`calling Socket id: ${socket.id}`);
-
-  socket.on('join', (roomID) => {
-    let socketIds = socketIdsInRoom(roomID);
-    console.log('calling join',socketIds);
-    socket.join(roomID);
-    socket.room = roomID;
-  });
-
-  socket.on('hangOff', roomID => {
-    console.log('hangOff');
-    socketIdsInRoom(roomID).forEach(socketId => {
-      io.sockets.connected[socketId].emit('closeModal');
-    })
   });
 }
 
