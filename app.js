@@ -60,7 +60,6 @@ function ioCallback(socket) {
   });
   socket.on('declineCalling', roomID => {
     console.log('declineCalling');
-    // console.log('現在有這些Socket 在room裡',socketIdsInRoom(roomID))
     io.in(roomID).emit('leave');
     socketIdsInRoom(roomID).forEach(socketId => {
       // let currentSocket = io.sockets.connected[socketId];
@@ -69,6 +68,11 @@ function ioCallback(socket) {
       }
 
     })
+  });
+  socket.on('checkRoomIsEmpty', (roomID, callBack) => {
+    console.log('checkRoomIsEmpty');
+    let socketIds = socketIdsInRoom(roomID);
+    callBack(socketIds)
   });
 
   socket.on('disconnect', () => {
