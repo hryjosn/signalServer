@@ -4,7 +4,6 @@ const https = require('https')
 const http = require('http')
 
 const getCallback = require('./middlewares/getCallback')
-const ioCallback = require('./middlewares/ioCallback')
 const listenCallback = require('./middlewares/listenCallback')
 
 const app = express()
@@ -20,10 +19,11 @@ if (process.env.LOCAL) {
   server = http.createServer(app)
 }
 const io = require('socket.io')(server)
+const ioObject = require('./middlewares/ioCallback')(io)
 const serverPort = (process.env.PORT || 4443)
 
 app.use(express.static(__dirname + '../test'))
 app.get('/', getCallback)
-io.on('connection', ioCallback)
+io.on('connection', ioObject.ioCallback)
 
 server.listen(serverPort, listenCallback(serverPort))
