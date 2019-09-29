@@ -10,7 +10,6 @@ module.exports = (io) => {
     })
 
     socket.on('exchange', data => {
-      console.log('exchange', data.to)
       data.from = socket.id
       const to = io.sockets.connected[data.to]
       to.emit('exchange', data)
@@ -30,6 +29,11 @@ module.exports = (io) => {
       const socketIds = await socketIdsInRoom(roomID)
       callBack(socketIds)
     })
+    socket.on('turnCamera', data => {
+      console.log('turnOnOrOffCamera');
+      const to = io.sockets.connected[data.to];
+      to.emit('turnCamera', data.param);
+    });
     socket.on('disconnect', () => {
       console.log('disconnect')
       if (socket.room) {
