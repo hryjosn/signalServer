@@ -1,0 +1,18 @@
+version:            0.0
+os:                 linux
+files:
+  - source:         /
+    destination:    /var/api/
+hooks:
+  ApplicationStop:
+    - location:     scripts/stop.sh
+      runas:        root
+      timeout:      300
+  AfterInstall:
+    - location:     scripts/install.sh
+      runas:        root
+      timeout:      300
+  ApplicationStart:
+    - location:     scripts/start.sh
+      runas:        root
+      timeout:      60

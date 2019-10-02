@@ -21,7 +21,7 @@ if (process.env.LOCAL) {
 }
 const io = require('socket.io')(server)
 const ioObject = require('./middlewares/ioCallback')(io)
-const serverPort = (process.env.PORT || 4443)
+const serverPort = (process.env.PORT || 80)
 
 app.use(express.static(path.join(__dirname, '../test')))
 app.get('/', getCallback)
