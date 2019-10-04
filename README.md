@@ -3,4 +3,4 @@
 ## Usage
 - open cmd
 - `npm install`
-- `node app`
+- `node src/app`
