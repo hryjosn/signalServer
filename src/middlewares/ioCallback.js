@@ -4,35 +4,38 @@ module.exports = (io) => {
     socket.on('join', async (roomID, callback) => {
       console.log('join', roomID)
       const socketIds = await socketIdsInRoom(roomID)
+      console.log('socketIdsInRoom>>>', socketIds)
       callback(socketIds)
       socket.join(roomID)
       socket.room = roomID
     })
 
     socket.on('exchange', data => {
-      data.from = socket.id
+      console.log('exchange');
+      data.from = socket.id;
       const to = io.sockets.connected[data.to]
       to.emit('exchange', data)
     })
     socket.on('declineCalling', roomID => {
       console.log('declineCalling')
       io.in(roomID).emit('leave')
-      socketIdsInRoom(roomID).forEach(socketId => {
-        if (io.sockets.connected[socketId]) {
-          io.sockets.connected[socketId].conn.close()
-        }
-
+      socketIdsInRoom(roomID).then(socketIds => {
+        socketIds.forEach(socketId => {
+          if (io.sockets.connected[socketId]) {
+            io.sockets.connected[socketId].conn.close()
+          }
+        })
       })
     })
     socket.on('checkRoomIsEmpty', async (roomID, callBack) => {
-      console.log('checkRoomIsEmpty')
+      console.log('checkRoomIsEmpty ')
       const socketIds = await socketIdsInRoom(roomID)
       callBack(socketIds)
     })
-    socket.on('turnCamera', data => {
+    socket.on('turnOffCamera', data => {
       console.log('turnOnOrOffCamera');
       const to = io.sockets.connected[data.to];
-      to.emit('turnCamera', data.param);
+      to.emit('turnOffCamera', data.param);
     });
     socket.on('disconnect', () => {
       console.log('disconnect')
