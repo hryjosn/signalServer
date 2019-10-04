@@ -1,6 +1,6 @@
 {
   "name": "react-native-webrtc-server",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "react-native-webrtc server",
   "main": "app.js",
   "engines": {
@@ -8,7 +8,10 @@
   },
   "scripts": {
     "start": "node src/app.js",
-    "dev": "nodemon src/app.js"
+    "dev": "nodemon src/app.js",
+    "logs": "pm2 log web-rtc",
+    "pm2-start": "pm2 start npm --no-automation --name web-rtc -- run start",
+    "pm2-stop": "pm2 stop web-rtc --silent || : ;pm2 delete web-rtc ;"
   },
   "dependencies": {
     "dotenv": "^8.1.0",
