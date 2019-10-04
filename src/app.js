@@ -27,7 +27,6 @@ const serverPort = (process.env.PORT || 4443)
 app.use(express.static(path.join(__dirname, '../test')))
 app.get('/', getCallback)
 io.on('connection', (io) => {
-  console.log('Johnson test')
   const master = "webRTC-signal-sever-key";
   if (master === process.env.MASTER_KEY) {
     ioObject.ioCallback(io)
