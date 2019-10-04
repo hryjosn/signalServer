@@ -1,4 +1,4 @@
-# Tico-Signal-Server
+# Signal-Server
 
 ## Usage
 - open cmd
