@@ -1,6 +1,7 @@
 module.exports = (io) => {
   function ioCallback(socket) {
     console.log(`Socket id: ${socket.id}`)
+    socket.send(socket.id);
     socket.on('join', async (roomID, callback) => {
       console.log('join', roomID)
       const socketIds = await socketIdsInRoom(roomID)
@@ -37,6 +38,10 @@ module.exports = (io) => {
       const to = io.sockets.connected[data.to];
       to.emit('turnOffCamera', data.param);
     });
+    socket.on('refuse', socketId => {
+      const to = io.sockets.connected[socketId]
+      to.emit('refuse')
+    })
     socket.on('disconnect', () => {
       console.log('disconnect')
       if (socket.room) {
