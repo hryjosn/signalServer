@@ -5,7 +5,6 @@ module.exports = (io) => {
     socket.on('join', async (roomID, callback) => {
       console.log('join', roomID)
       const socketIds = await socketIdsInRoom(roomID)
-      console.log('socketIdsInRoom>>>', socketIds)
       callback(socketIds)
       socket.join(roomID)
       socket.room = roomID

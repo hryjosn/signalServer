@@ -4,7 +4,7 @@
   "description": "react-native-webrtc server",
   "main": "app.js",
   "engines": {
-    "node": "v8.12.0"
+    "node": "v12.18.0"
   },
   "scripts": {
     "start": "node src/app.js",
@@ -19,5 +19,8 @@
     "open": "^6.4.0",
     "path": "^0.12.7",
     "socket.io": "^2.3.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
   }
 }
