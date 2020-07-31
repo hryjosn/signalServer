@@ -1,24 +1,22 @@
 module.exports = (io) => {
   function ioCallback(socket) {
-    console.log(`Socket id: ${socket.id}`)
-    socket.emit('connect', socket.id)
     socket.on('join', async (roomID, callback) => {
-      console.log('join', roomID)
+      // when the client join the room by roomId
       const socketIds = await socketIdsInRoom(roomID)
       callback(socketIds)
       socket.join(roomID)
       socket.room = roomID
     })
-
     socket.on('exchange', data => {
-      console.log('exchange');
+      //exchange the clients' data
       data.from = socket.id;
       const to = io.sockets.connected[data.to]
       to.emit('exchange', data)
     })
     socket.on('declineCalling', roomID => {
-      console.log('declineCalling')
+      //when client refuse or decline the call
       io.in(roomID).emit('leave')
+      //emit leave to client socket event
       socketIdsInRoom(roomID).then(socketIds => {
         socketIds.forEach(socketId => {
           if (io.sockets.connected[socketId]) {
@@ -27,22 +25,7 @@ module.exports = (io) => {
         })
       })
     })
-    socket.on('checkRoomIsEmpty', async (roomID, callBack) => {
-      console.log('checkRoomIsEmpty ')
-      const socketIds = await socketIdsInRoom(roomID)
-      callBack(socketIds)
-    })
-    socket.on('turnOffCamera', data => {
-      console.log('turnOnOrOffCamera');
-      const to = io.sockets.connected[data.to];
-      to.emit('turnOffCamera', data.param);
-    });
-    socket.on('refuse', socketId => {
-      const to = io.sockets.connected[socketId]
-      to.emit('refuse')
-    })
     socket.on('disconnect', () => {
-      console.log('disconnect')
       if (socket.room) {
         const room = socket.room
         io.to(room).emit('leave', socket.id)
